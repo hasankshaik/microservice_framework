@@ -1,11 +1,15 @@
 package uk.gov.justice.services.adapters.rest.generator;
 
+import static java.lang.String.format;
 import static org.apache.commons.lang.StringUtils.defaultIfBlank;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.remove;
 import static org.apache.commons.lang.StringUtils.substringAfter;
 import static org.apache.commons.lang.StringUtils.uncapitalize;
 import static org.apache.commons.lang.WordUtils.capitalize;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
+import uk.gov.justice.raml.core.GeneratorConfig;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,7 +30,7 @@ final class Names {
     static final String DEFAULT_ANNOTATION_PARAMETER = "value";
     static final String GENERIC_PAYLOAD_ARGUMENT_NAME = "entity";
     static final String RESOURCE_PACKAGE_NAME = "resource";
-    static final String RESOURCE_PACKAGE_NAME_WITH_DOT = "." + RESOURCE_PACKAGE_NAME;
+    static final String MAPPER_PACKAGE_NAME = "mapper";
     static final String JAVA_FILENAME_SUFFIX = ".java";
 
     private static final Set<String> JAVA_KEYWORDS = Collections.unmodifiableSet(new HashSet<>(
@@ -66,6 +70,10 @@ final class Names {
                 resource.getRelativeUri()));
 
         return isBlank(resourceInterfaceName) ? "Root" : resourceInterfaceName.concat(INTERFACE_NAME_SUFFIX);
+    }
+
+    static String resourceImplementationNameOf(final Resource resource) {
+        return format("Default%s", resourceInterfaceNameOf(resource));
     }
 
     static String buildVariableName(final String source) {
@@ -114,5 +122,13 @@ final class Names {
             return remove(remove(remove(subType, "x-www-"), "+"), "-");
         }
 
+    }
+
+    static String packageNameOf(final GeneratorConfig configuration, final String subPackageName) {
+        StringBuilder packageBuilder = new StringBuilder().append(configuration.getBasePackageName());
+        if (isNotEmpty(subPackageName)) {
+            packageBuilder.append('.').append(subPackageName);
+        }
+        return packageBuilder.toString();
     }
 }

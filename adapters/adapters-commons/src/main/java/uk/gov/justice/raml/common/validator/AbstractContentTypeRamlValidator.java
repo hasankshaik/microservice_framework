@@ -1,13 +1,11 @@
 package uk.gov.justice.raml.common.validator;
 
 import static java.lang.String.format;
-import static java.util.Arrays.stream;
 import static org.apache.commons.lang.StringUtils.capitalize;
 
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import org.raml.model.Action;
 import org.raml.model.ActionType;
@@ -19,12 +17,10 @@ public abstract class AbstractContentTypeRamlValidator extends AbstractResourceR
     private final ActionType actionType;
     private final String contentTypeDec;
 
-    public AbstractContentTypeRamlValidator(ActionType actionType, String contentTypeDec, String... componentTypes) {
+    public AbstractContentTypeRamlValidator(ActionType actionType, String contentTypeDec) {
         this.actionType = actionType;
         this.contentTypeDec = contentTypeDec;
-        String pipelineSeparatedComponentTypes = stream(componentTypes).collect(Collectors.joining("|"));
-        mediaTypePattern = Pattern
-                .compile(format("application/vnd\\.\\S+\\.(%s)\\.\\S+\\+json", pipelineSeparatedComponentTypes));
+        mediaTypePattern = Pattern.compile("application/vnd\\.\\S+\\+json");
     }
 
     @Override

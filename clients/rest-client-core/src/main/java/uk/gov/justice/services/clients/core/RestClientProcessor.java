@@ -77,7 +77,7 @@ public class RestClientProcessor {
             }
         }
 
-        final Invocation.Builder builder = target.request(format(MEDIA_TYPE_PATTERN, envelope.metadata().name()));
+        final Invocation.Builder builder = target.request(format(MEDIA_TYPE_PATTERN, definition.getResponseMediaType()));
 
         final WebTarget finalTarget = target;
         trace(LOGGER, () -> String.format("Sending REST request to %s using message: %s", finalTarget.getUri().toString(),

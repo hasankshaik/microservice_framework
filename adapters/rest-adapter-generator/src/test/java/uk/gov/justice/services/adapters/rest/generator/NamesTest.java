@@ -5,7 +5,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.raml.model.ActionType.POST;
 import static uk.gov.justice.services.adapters.rest.generator.Names.applicationNameFrom;
-import static uk.gov.justice.services.adapters.test.utils.builder.ActionBuilder.action;
+import static uk.gov.justice.services.adapters.test.utils.builder.HttpActionBuilder.httpAction;
 import static uk.gov.justice.services.adapters.test.utils.builder.RamlBuilder.restRamlWithDefaults;
 import static uk.gov.justice.services.adapters.test.utils.builder.ResourceBuilder.resource;
 
@@ -59,7 +59,7 @@ public class NamesTest {
 
     @Test
     public void shouldBuildResourceMethodName() throws Exception {
-        Action action = action().withActionType(POST).build();
+        Action action = httpAction().withHttpActionType(POST).build();
         action.setResource(resource().withRelativeUri("test").build());
         String shortMimeType = Names.buildResourceMethodName(action, new MimeType("application/vnd.command.create-user+json"));
         assertThat(shortMimeType, is("postVndCommandCreateUserJsonTest"));

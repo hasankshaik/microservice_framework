@@ -29,7 +29,7 @@ public class RecipesQueryView {
     @Inject
     Enveloper enveloper;
 
-    @Handles("cakeshop.query.recipe")
+    @Handles("cakeshop.get-recipe")
     public JsonEnvelope findRecipe(final JsonEnvelope query) {
         LOGGER.info("=============> Inside findRecipe Query View. RecipeId: " + query.payloadAsJsonObject().getString(FIELD_RECIPE_ID));
 
@@ -37,7 +37,7 @@ public class RecipesQueryView {
                 recipeService.findRecipe(query.payloadAsJsonObject().getString(FIELD_RECIPE_ID)));
     }
 
-    @Handles("cakeshop.query.recipes")
+    @Handles("cakeshop.search-recipes")
     public JsonEnvelope listRecipes(final JsonEnvelope query) {
         LOGGER.info("=============> Inside listRecipes Query View");
 

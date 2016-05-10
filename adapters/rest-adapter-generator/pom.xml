@@ -155,7 +155,9 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/generated-test-resources/json/schema</outputDirectory>
+                            <outputDirectory>
+                                ${basedir}/target/generated-test-resources/json/schema
+                            </outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>src/test/resources/raml/json/schema</directory>

@@ -9,6 +9,15 @@ protocols: [ HTTP, HTTPS ]
   description: |
     Create user or Update user
   post:
+    description: |
+        ...
+        (mapping):
+            requestType: application/vnd.people.command.create-user+json
+            name: people.create-user
+        (mapping):
+            requestType: application/vnd.people.command.update-user+json
+            name: people.update-user
+        ...
     body:
         application/vnd.people.command.create-user+json:
             schema: !include json/schema/people.command.create-user.json
@@ -17,6 +26,15 @@ protocols: [ HTTP, HTTPS ]
             schema: !include json/schema/people.command.update-user.json
             example: !include json/update-user.json
   get:
+    description: |
+        ...
+        (mapping):
+            responseType: application/vnd.people.query.get-user+json
+            name: people.get-user1
+        (mapping):
+            responseType: application/vnd.people.query.get-user2+json
+            name: people.get-user2
+        ...
     responses:
         200:
             body:
@@ -27,6 +45,12 @@ protocols: [ HTTP, HTTPS ]
   description: |
     Search users
   get:
+    description: |
+          ...
+          (mapping):
+              responseType: application/vnd.people.query.search-users+json
+              name: people.search-users
+          ...
     queryParameters:
         lastname:
             type: string

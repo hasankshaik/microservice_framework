@@ -10,8 +10,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.raml.model.ActionType.GET;
-import static uk.gov.justice.services.adapters.test.utils.builder.ActionBuilder.defaultGetAction;
+import static uk.gov.justice.services.adapters.test.utils.builder.HttpActionBuilder.defaultGetAction;
 import static uk.gov.justice.services.adapters.test.utils.builder.RamlBuilder.restRamlWithDefaults;
 import static uk.gov.justice.services.adapters.test.utils.builder.RamlBuilder.restRamlWithQueryApiDefaults;
 import static uk.gov.justice.services.adapters.test.utils.builder.ResourceBuilder.defaultGetResource;
@@ -20,7 +19,6 @@ import static uk.gov.justice.services.adapters.test.utils.config.GeneratorConfig
 import static uk.gov.justice.services.adapters.test.utils.reflection.ReflectionUtil.firstMethodOf;
 import static uk.gov.justice.services.adapters.test.utils.reflection.ReflectionUtil.setField;
 
-import uk.gov.justice.services.adapters.test.utils.builder.ActionBuilder;
 import uk.gov.justice.services.adapters.test.utils.compiler.JavaCompilerUtil;
 import uk.gov.justice.services.clients.core.EndpointDefinition;
 import uk.gov.justice.services.clients.core.RestClientHelper;
@@ -47,9 +45,11 @@ import org.raml.model.parameter.QueryParameter;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RestClientGenerator_MethodBodyTest {
+
     private static final String BASE_PACKAGE = "org.raml.test";
     private static final JsonEnvelope NOT_USED_ENVELOPE = DefaultJsonEnvelope.envelopeFrom(null, null);
     private static final Map<String, String> NOT_USED_GENERATOR_PROPERTIES = ImmutableMap.of("serviceComponent", "QUERY_CONTROLLER");
+
     @Rule
     public TemporaryFolder outputFolder = new TemporaryFolder();
     @Mock
@@ -87,7 +87,7 @@ public class RestClientGenerator_MethodBodyTest {
 
         restClientGenerator.run(
                 restRamlWithQueryApiDefaults()
-                        .with(resource("/pathabc/{anId}").with(ActionBuilder.action().withActionType(GET).withDefaultResponseType()))
+                        .with(resource("/pathabc/{anId}").withDefaultAction())
                         .build(),
                 configurationWithBasePackage(BASE_PACKAGE, outputFolder, NOT_USED_GENERATOR_PROPERTIES));
 
@@ -102,7 +102,7 @@ public class RestClientGenerator_MethodBodyTest {
 
         restClientGenerator.run(
                 restRamlWithQueryApiDefaults()
-                        .with(resource("/pathabc").with(ActionBuilder.action().withActionType(GET).withDefaultResponseType()))
+                        .with(resource("/pathabc").withDefaultAction())
                         .build(),
                 configurationWithBasePackage(BASE_PACKAGE, outputFolder, NOT_USED_GENERATOR_PROPERTIES));
 

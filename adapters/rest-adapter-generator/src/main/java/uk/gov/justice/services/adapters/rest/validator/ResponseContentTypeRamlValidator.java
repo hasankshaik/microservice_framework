@@ -16,7 +16,7 @@ import org.raml.model.MimeType;
 public class ResponseContentTypeRamlValidator extends AbstractContentTypeRamlValidator {
 
     public ResponseContentTypeRamlValidator() {
-        super(ActionType.GET, "response type", "query");
+        super(ActionType.GET, "response type");
     }
 
     @Override
