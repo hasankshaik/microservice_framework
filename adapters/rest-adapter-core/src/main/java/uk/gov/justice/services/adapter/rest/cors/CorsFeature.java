@@ -26,7 +26,7 @@ public class CorsFeature implements Feature {
     String allowedHeaders;
 
     @Override
-    public boolean configure(FeatureContext context) {
+    public boolean configure(final FeatureContext context) {
         final CorsFilter corsFilter = new CorsFilter();
         corsFilter.setAllowedMethods(allowedMethods);
         corsFilter.getAllowedOrigins().add(allowedOrigin);

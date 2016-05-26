@@ -22,6 +22,7 @@ import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 /**
  * JAX-RS filter for adding CORS headers for API layer service components.
@@ -54,7 +55,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
         return allowCredentials;
     }
 
-    public void setAllowCredentials(boolean allowCredentials) {
+    public void setAllowCredentials(final boolean allowCredentials) {
         this.allowCredentials = allowCredentials;
     }
 
@@ -68,7 +69,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
     /**
      * Will allow all by default comma delimited string for Access-Control-Allow-Methods
      */
-    public void setAllowedMethods(String allowedMethods) {
+    public void setAllowedMethods(final String allowedMethods) {
         this.allowedMethods = allowedMethods;
     }
 
@@ -79,7 +80,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
     /**
      * Will allow all by default comma delimited string for Access-Control-Allow-Headers
      */
-    public void setAllowedHeaders(String allowedHeaders) {
+    public void setAllowedHeaders(final String allowedHeaders) {
         this.allowedHeaders = allowedHeaders;
     }
 
@@ -87,7 +88,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
         return corsMaxAge;
     }
 
-    public void setCorsMaxAge(int corsMaxAge) {
+    public void setCorsMaxAge(final int corsMaxAge) {
         this.corsMaxAge = corsMaxAge;
     }
 
@@ -98,13 +99,13 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
     /**
      * comma delimited list
      */
-    public void setExposedHeaders(String exposedHeaders) {
+    public void setExposedHeaders(final String exposedHeaders) {
         this.exposedHeaders = exposedHeaders;
     }
 
     @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
-        String origin = requestContext.getHeaderString(ORIGIN);
+    public void filter(final ContainerRequestContext requestContext) throws IOException {
+        final String origin = requestContext.getHeaderString(ORIGIN);
         if (origin == null) {
             return;
         }
@@ -116,8 +117,8 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
     }
 
     @Override
-    public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
-        String origin = requestContext.getHeaderString(ORIGIN);
+    public void filter(final ContainerRequestContext requestContext, final ContainerResponseContext responseContext) throws IOException {
+        final String origin = requestContext.getHeaderString(ORIGIN);
         if (origin == null || requestContext.getMethod().equalsIgnoreCase(OPTIONS) || requestContext.getProperty(CORS_FAILURE_PROPERTY_NAME) != null) {
             // don't do anything if origin is null, its an OPTIONS request, or cors.failure is set
             return;
@@ -131,10 +132,10 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
         }
     }
 
-    private void preflight(String origin, ContainerRequestContext requestContext) throws IOException {
+    private void preflight(final String origin, final ContainerRequestContext requestContext) throws IOException {
         checkOrigin(requestContext, origin);
 
-        Response.ResponseBuilder builder = Response.ok();
+        final ResponseBuilder builder = Response.ok();
         builder.header(ACCESS_CONTROL_ALLOW_ORIGIN, origin);
         if (allowCredentials) builder.header(ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
         String requestMethods = requestContext.getHeaderString(ACCESS_CONTROL_REQUEST_METHOD);
@@ -157,7 +158,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
         requestContext.abortWith(builder.build());
     }
 
-    private void checkOrigin(ContainerRequestContext requestContext, String origin) {
+    private void checkOrigin(final ContainerRequestContext requestContext, String origin) {
         if (!allowedOrigins.contains("*") && !allowedOrigins.contains(origin)) {
             requestContext.setProperty(CORS_FAILURE_PROPERTY_NAME, true);
             throw new ForbiddenException("Origin not allowed: " + origin);
